@@ -38,5 +38,8 @@ headers = {
     'x-nextjs-data': '1',
 }
 
+username = "sairamgunner@gmail.com"
+password = "Sairam@9396"
+
 response = requests.get('https://www.zoocasa.com/vancouver-bc-real-estate/25-w-king-edward-ave', headers=headers, cookies=cookies)
 print(response.content)
