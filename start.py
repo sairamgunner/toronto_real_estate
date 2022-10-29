@@ -1,5 +1,7 @@
 from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
 import time
 import config
 
@@ -8,11 +10,12 @@ import config
 # options.add_argument("window-size=1366,768")
 
 # initializing selenium driver instance
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(ChromeDriverManager().install())
 
 # setting window dimensions
 print(driver.get_window_size)
-driver.set_window_size(1366, 768)
+# driver.set_window_size(1366, 768)
+driver.maximize_window()
 
 # accessing website
 driver.get("https://www.zoocasa.com/toronto-on-real-estate")
@@ -35,12 +38,20 @@ passwordInput.send_keys(config.password)
 passwordInput.send_keys("\n")
 
 time.sleep(5)
-houseDiv = driver.find_element("xpath", "//div[@class='style_wrapper__Z8WDF']")
+houseDiv = driver.find_elements("xpath", "//div[@class='style_wrapper__Z8WDF']")
 
 # signInButton = driver.find_element("xpath", "//button[contains(text(), 'Sign In')]")
 # signInButton.click()
 
+links = []
+
 for item in houseDiv:
     item.click()
     time.sleep(2)
+    linkURL = driver.find_element("xpath", "//*[@id='listing']/div[1]/div/a")
+    links.append(linkURL.get_attribute("href"))
+    time.sleep(2)
+    linkURL.send_keys(Keys.ESCAPE)
+    time.sleep(5)
     
+print(links)
