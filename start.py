@@ -18,7 +18,8 @@ print(driver.get_window_size)
 driver.maximize_window()
 
 # accessing website
-driver.get("https://www.zoocasa.com/toronto-on-real-estate")
+# driver.get("https://www.zoocasa.com/toronto-on-real-estate")
+driver.get("https://www.zoocasa.com/toronto-on-sold-listings?")
 time.sleep(5)
 
 # finding and clicking login button
@@ -37,6 +38,9 @@ passwordInput.click()
 passwordInput.send_keys(config.password)
 passwordInput.send_keys("\n")
 
+time.sleep(2)
+driver.get("https://www.zoocasa.com/toronto-on-sold-listings")
+
 time.sleep(5)
 houseDiv = driver.find_elements("xpath", "//div[@class='style_wrapper__Z8WDF']")
 
@@ -44,6 +48,17 @@ houseDiv = driver.find_elements("xpath", "//div[@class='style_wrapper__Z8WDF']")
 # signInButton.click()
 
 links = []
+title = []
+final_price = []
+list_price = []
+bedrooms = []
+bathrooms = []
+sqft = []
+parking = []
+description = []
+mls = []
+type = []
+full_link = []
 
 for item in houseDiv:
     item.click()
