@@ -4,6 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
 import config
+import pandas as pd
 
 # setting window dimensions (one way of doing it)
 # options = Options()
@@ -47,7 +48,6 @@ houseDiv = driver.find_elements("xpath", "//div[@class='style_wrapper__Z8WDF']")
 # signInButton = driver.find_element("xpath", "//button[contains(text(), 'Sign In')]")
 # signInButton.click()
 
-links = []
 title = []
 final_price = []
 list_price = []
@@ -59,14 +59,43 @@ description = []
 mls = []
 type = []
 full_link = []
+full_address = []
 
 for item in houseDiv:
     item.click()
     time.sleep(2)
     linkURL = driver.find_element("xpath", "//*[@id='listing']/div[1]/div/a")
-    links.append(linkURL.get_attribute("href"))
+
+    title.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[1]/span[2]/span[1]/a/h1").text)
+    final_price.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[2]/span/div/div/div[1]").text)
+    list_price.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[2]/span/div/div/div[2]/span").text)
+    bedrooms.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[1]/div/div/span[1]").text)
+    sqft.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[1]/div/div/span[3]").text)
+    parking.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[1]/div/div/span[4]").text)
+    type.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[1]/div[1]/div[1]/span[2]/span[1]/a/h1/span").text)
+    full_link.append(linkURL.get_attribute("href"))
+    full_address.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[2]/div/div/div/section/p[1]").text)
+    driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[2]/ul/li[2]").click()
+    description.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[2]/div/div/div[1]/section/p/section").text)
+    mls.append(driver.find_element("xpath", "//*[@id='listing']/div[3]/span[1]/div[2]/div/div/div[3]/section/section/div[1]/span[2]").text)
     time.sleep(2)
     linkURL.send_keys(Keys.ESCAPE)
     time.sleep(5)
+
+data = pd.DataFrame(
+    {
+        'title': title,
+        'final_price': final_price,
+        'list_price': list_price,
+        'bedrooms': bedrooms,
+        'sqft': sqft,
+        'parking': parking,
+        'description': description,
+        'mls': mls,
+        'type': type,
+        'full_link': full_link,
+        'full_address': full_address
+    }
+)
     
-print(links)
+print(data)
