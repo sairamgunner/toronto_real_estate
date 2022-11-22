@@ -1,5 +1,6 @@
 from urllib import response
 import requests
+import os
 
 # copy c URL for bash from Network Tab of Chrome Dev Tools for a GET request after auth and paste it in
 # curl.trillworks.com and receive Python code
@@ -38,8 +39,8 @@ headers = {
     'x-nextjs-data': '1',
 }
 
-username = "sairamgunner@gmail.com"
-password = "Sairam@9396"
+username = str(os.environ.get("ZOOCASA_USER"))
+password = str(os.environ.get("ZOOCASA_PW"))
 
 response = requests.get('https://www.zoocasa.com/vancouver-bc-real-estate/25-w-king-edward-ave', headers=headers, cookies=cookies)
 print(response.content)
